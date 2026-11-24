@@ -1,0 +1,11 @@
+project: savantenvs/seekdb
+target: json-path
+
+cmds:
+  - cmd: /mayhem/json_path
+    libfuzzer: true
+    timeout: 5
+
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/json-path/testsuite

@@ -1,0 +1,32 @@
+# Fuzz-only shim over upstream rust/sql-nio. Its packet parsers live in private modules,
+# so mayhem/build.sh generates gen/lib.rs: upstream's lib.rs with every `mod x;` pointed at
+# rust/sql-nio/src/x.rs via #[path], plus a `pub mod fuzz_api` that re-exports the parsers.
+# No upstream file is modified. Dependencies mirror rust/sql-nio/Cargo.toml (Linux,
+# native-network feature).
+[package]
+name = "sql-nio-shim"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "sql_nio"
+path = "gen/lib.rs"
+test = false
+doc = false
+
+[features]
+default = ["native-network"]
+native-network = []
+memory-transport = []
+
+[dependencies]
+cxx = "1"
+compression = { path = "../../../rust/compression" }
+slab = "0.4"
+rustls = { version = "0.23.46", default-features = false, features = ["std", "tls12", "ring"] }
+rustls-pki-types = { version = "1", features = ["std"] }
+x509-parser = { version = "0.18", default-features = false }
+mio = { version = "1", features = ["os-poll", "net", "os-ext"] }
+socket2 = { version = "0.6", features = ["all"] }
+libc = "0.2"

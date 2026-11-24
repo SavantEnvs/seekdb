@@ -1,0 +1,24 @@
+# Fuzz-only shim that links upstream's JSON Schema `pattern` compiler,
+# rust/json/src/schema_pattern.cpp (std::regex behind the cxx bridge), into the cargo-fuzz
+# binaries. The json crate declares the same bridge (bridge.rs), but its private module and
+# the Bazel cc_library are what link it in production; here build.rs compiles the same .cpp
+# with cxx_build. No upstream file is modified.
+[package]
+name = "schema-pattern-shim"
+version = "0.0.0"
+edition = "2021"
+publish = false
+build = "build.rs"
+
+[lib]
+name = "schema_pattern_shim"
+path = "src/lib.rs"
+test = false
+doc = false
+
+[dependencies]
+cxx = "=1.0.202"
+json = { path = "../../../rust/json" }
+
+[build-dependencies]
+cxx-build = "=1.0.202"

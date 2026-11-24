@@ -1,0 +1,2 @@
+{"type":"object","required":["a"],"properties":{"a":{"type":"string","pattern":"ab","maxLength":5},"n":{"type":"number","minimum":3}},"additionalProperties":false}
+{"a":"xaby","n":4}

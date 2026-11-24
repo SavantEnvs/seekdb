@@ -1,0 +1,2 @@
+{"type":"array","items":{"enum":[1,2,"x"]},"minItems":1,"uniqueItems":true}
+[1,"x",2]
